@@ -1,6 +1,7 @@
 from audio_tools import record_to_file
 import os, sys, shutil
 
+# Sets character for recording
 def set_character():
     while True:
         print("Enter character you are recording.")
@@ -11,13 +12,16 @@ def set_character():
             return c_input
             break
 
+# Checks if directory already exists and builds a new one if it does not.
 def dir_builder(c_input):
     path = "../data/" + c_input + "/"
     if os.path.exists(path):
-        shutil.rmtree(path, ignore_errors=True)
-    os.mkdir( path);
+        print("Path exists")
+    else:
+        os.mkdir( path);
     print("Path is created")
 
+# Loops through 10 to create 10 training instances.
 def input_loop(c_input):
     for x in range(10):
         path = "../data/" + c_input + "/" + c_input + "_" + str(x) + ".wav"
