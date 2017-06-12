@@ -56,6 +56,7 @@ def trim(snd_data):
     # snd_data.reverse()
     return snd_data
 
+
 def add_silence(snd_data, seconds):
     "Add silence to the start and end of 'snd_data' of length 'seconds' (float)"
     r = array('h', [0 for i in xrange(int(seconds*RATE))])
