@@ -5,6 +5,7 @@ from struct import pack
 import pyaudio
 import wave
 
+# Modify these as necessary, but these should be good for default microphones
 SILENCE_THRESHOLD = 20000
 TRIM_THRESHOLD = 5000
 SILENCE_COUNT = 20
@@ -13,11 +14,13 @@ CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
 RATE = 44100
 
+# Checks if recorded data is silence.
 def is_silent(snd_data):
     "Returns 'True' if below the 'silent' threshold"
     print(max(snd_data))
     return max(snd_data) < SILENCE_THRESHOLD
 
+# Normalizes to prevent against clipping.
 def normalize(snd_data):
     "Average the volume out"
     MAXIMUM = 16384
@@ -28,6 +31,7 @@ def normalize(snd_data):
         r.append(int(i*times))
     return r
 
+# Removes silence at the start and end.
 def trim(snd_data):
     "Trim the blank spots at the start and end"
     def _trim(snd_data):
