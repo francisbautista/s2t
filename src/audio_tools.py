@@ -56,7 +56,7 @@ def trim(snd_data):
     # snd_data.reverse()
     return snd_data
 
-
+# Adds silence to the start and end for VLC playback capability
 def add_silence(snd_data, seconds):
     "Add silence to the start and end of 'snd_data' of length 'seconds' (float)"
     r = array('h', [0 for i in xrange(int(seconds*RATE))])
@@ -64,6 +64,7 @@ def add_silence(snd_data, seconds):
     r.extend([0 for i in xrange(int(seconds*RATE))])
     return r
 
+# Record function
 def record():
     """
     Record a word or words from the microphone and
@@ -110,6 +111,7 @@ def record():
     # r = add_silence(r, 0.5)
     return sample_width, r
 
+# Calls record and writes to file path specified
 def record_to_file(path):
     "Records from the microphone and outputs the resulting data to 'path'"
     sample_width, data = record()
