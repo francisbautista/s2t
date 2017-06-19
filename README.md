@@ -3,7 +3,9 @@
 ### TODO
 
 - fix directory permission errors when directory already exists
+- append new audio recordings to dir if character dir already exists
 - add normalization function to prevent clipping
+- refactor instantiation of pyaudio object to a proper OOP class
 
 ### Dependencies
 DON'T FORGET:
