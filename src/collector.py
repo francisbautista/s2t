@@ -1,4 +1,4 @@
-from audio_tools import record_to_file
+from audio_tools import record_to_file, calibrate
 import os, sys, shutil
 
 # Sets character for recording
@@ -30,6 +30,8 @@ def input_loop(c_input):
         print("done - result written to " + path)
 
 if __name__ == '__main__':
+    print("Please remain silent for 5 seconds for calibration.")
+    print("Calibrated for " + str(calibrate()) +" silence value.")
     input_character = set_character()
     dir_builder(input_character)
     input_loop(input_character)

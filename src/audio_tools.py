@@ -9,6 +9,8 @@ import wave
 SILENCE_THRESHOLD = 20000
 TRIM_THRESHOLD = 5000
 SILENCE_COUNT = 20
+CALIBRATION_TIME = 5
+MAXIMUM = 16384
 
 CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
@@ -20,10 +22,9 @@ def is_silent(snd_data):
     print(max(snd_data))
     return max(snd_data) < SILENCE_THRESHOLD
 
-# Normalizes to prevent against clipping.
+# Normalizes to prevent clipping.
 def normalize(snd_data):
     "Average the volume out"
-    MAXIMUM = 16384
     times = float(MAXIMUM)/max(abs(i) for i in snd_data)
 
     r = array('h')
@@ -123,6 +124,36 @@ def record_to_file(path):
     wf.setframerate(RATE)
     wf.writeframes(data)
     wf.close()
+
+# Calibrates SILENCE_THRESHOLD value to 5 seconds of silence.
+def calibrate():
+    p = pyaudio.PyAudio()
+    stream = p.open(format=FORMAT, channels=1, rate=RATE,
+        input=True, output=True,
+        frames_per_buffer=CHUNK_SIZE)
+
+    r = array('h')
+
+    # Record for 5 seconds of silence
+    for i in range(0, int(RATE / CHUNK_SIZE * CALIBRATION_TIME)):
+        snd_data = array('h', stream.read(CHUNK_SIZE))
+        if byteorder == 'big':
+            snd_data.byteswap()
+        r.extend(snd_data)
+
+    sample_width = p.get_sample_size(FORMAT)
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+
+    r = normalize(r)
+    r = [x for x in r if x > 0] # Removes all negative values
+    # print(r)
+
+    global SILENCE_THRESHOLD
+    SILENCE_THRESHOLD = sum(r) / float(len(r)) # Get arithmetic mean of silence recording
+
+    return SILENCE_THRESHOLD
 
 # if __name__ == '__main__':
 #     print("please speak a word into the microphone")
