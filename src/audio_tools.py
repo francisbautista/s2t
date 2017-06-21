@@ -19,7 +19,9 @@ RATE = 44100
 # Checks if recorded data is silence.
 def is_silent(snd_data):
     "Returns 'True' if below the 'silent' threshold"
-    print(max(snd_data))
+    if max(snd_data) > SILENCE_THRESHOLD:
+        print(max(snd_data))
+
     return max(snd_data) < SILENCE_THRESHOLD
 
 # Normalizes to prevent clipping.
