@@ -47,7 +47,7 @@ def dir_builder(c_input):
 
 # Loops through 10 to create 10 training instances.
 def input_loop(c_input, next_file_count=0):
-    for x in range(next_file_count, next_file_count + 10):
+    for x in range(next_file_count, next_file_count + 25):
         path = "../data/" + c_input + "/" + c_input + "_" + str(x) + ".wav"
         print("Please speak a word into the microphone")
         record_to_file(path)
